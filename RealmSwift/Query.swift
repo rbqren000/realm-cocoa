@@ -165,9 +165,9 @@ public struct Query<T: _RealmSchemaDiscoverable> {
 
     /// :nodoc:
     public static prefix func ! (_ query: Query) -> Query {
-        if case let .strContains(lhs, rhs, options: options) = query.node,
+        if case let .comparison(op, lhs, rhs, options: options) = query.node,
            case let .mapSubscript(mapLhs, mapName, _) = lhs {
-            return Query(.strContains(.mapSubscript(mapLhs, collectionKeyPath: mapName, requiresNot: true),
+            return Query(.comparison(operator: op, .mapSubscript(mapLhs, collectionKeyPath: mapName, requiresNot: true),
                                       rhs,
                                       options: options))
         } else {
@@ -295,12 +295,12 @@ extension Query where T: RealmCollection {
 extension Query where T: RealmCollection {
     /// Checks if an element exists in this collection.
     public func contains<V>(_ value: T.Element) -> Query<V> {
-        Query<V>(.in(.constant(value), node))
+        Query<V>(.comparison(operator: .in, .constant(value), node, options: []))
     }
 
     /// Checks if any elements contained in the given array are present in the collection.
     public func containsAny<U: Sequence, V>(in collection: U) -> Query<V> where U.Element == T.Element {
-        Query<V>(.any(.in(node, .constant(collection))))
+        Query<V>(.any(.comparison(operator: .in, node, .constant(collection), options: [])))
     }
 }
 
@@ -401,14 +401,14 @@ extension Query where T: RealmKeyedCollection {
 
     /// Checks if any elements contained in the given array are present in the map's values.
     public func containsAny<U: Sequence, V>(in collection: U) -> Query<V> where U.Element == T.Value {
-        Query<V>(.any(.in(node, .constant(collection))))
+        Query<V>(.any(.comparison(operator: .in, node, .constant(collection), options: [])))
     }
 }
 
 extension Query where T: RealmKeyedCollection, T.Key: _RealmSchemaDiscoverable {
     /// Checks if an element exists in this collection.
     public func contains<V>(_ value: T.Value) -> Query<V> {
-        Query<V>(.in(.constant(value), node))
+        Query<V>(.comparison(operator: .in, .constant(value), node, options: []))
     }
     /// Allows a query over all values in the Map.
     public var values: Query<T.Value> {
@@ -665,7 +665,7 @@ extension Query where T: _QueryString {
      - parameter caseInsensitive: `true` if it is a case-insensitive search.
      */
     public func like<V>(_ value: T, caseInsensitive: Bool = false) -> Query<V> {
-        Query<V>(.like(node, .constant(value), options: caseInsensitive ? [.caseInsensitive] : []))
+        Query<V>(.comparison(operator: .like, node, .constant(value), options: caseInsensitive ? [.caseInsensitive] : []))
     }
 
     /**
@@ -675,7 +675,7 @@ extension Query where T: _QueryString {
      - parameter caseInsensitive: `true` if it is a case-insensitive search.
      */
     public func like<U, V>(_ column: Query<U>, caseInsensitive: Bool = false) -> Query<V> {
-        Query<V>(.like(node, column.node, options: caseInsensitive ? [.caseInsensitive] : []))
+        Query<V>(.comparison(operator: .like, node, column.node, options: caseInsensitive ? [.caseInsensitive] : []))
     }
 }
 
@@ -688,7 +688,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func contains<V>(_ value: T, options: StringOptions = []) -> Query<V> {
-        Query<V>(.strContains(node, .constant(value), options: options))
+        Query<V>(.comparison(operator: .contains, node, .constant(value), options: options))
     }
 
     /**
@@ -697,7 +697,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func contains<U, V>(_ column: Query<U>, options: StringOptions = []) -> Query<V> where U: _QueryBinary {
-        Query<V>(.strContains(node, column.node, options: options))
+        Query<V>(.comparison(operator: .contains, node, column.node, options: options))
     }
 
     /**
@@ -706,7 +706,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func starts<V>(with value: T, options: StringOptions = []) -> Query<V> {
-        Query<V>(.beginsWith(node, .constant(value), options: options))
+        Query<V>(.comparison(operator: .beginsWith, node, .constant(value), options: options))
     }
 
     /**
@@ -715,7 +715,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func starts<U, V>(with column: Query<U>, options: StringOptions = []) -> Query<V> {
-        Query<V>(.beginsWith(node, column.node, options: options))
+        Query<V>(.comparison(operator: .beginsWith, node, column.node, options: options))
     }
 
     /**
@@ -724,7 +724,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func ends<V>(with value: T, options: StringOptions = []) -> Query<V> {
-        Query<V>(.endsWith(node, .constant(value), options: options))
+        Query<V>(.comparison(operator: .endsWith, node, .constant(value), options: options))
     }
 
     /**
@@ -733,7 +733,7 @@ extension Query where T: _QueryBinary {
      - parameter options: A Set of options used to evaluate the search query.
      */
     public func ends<U, V>(with column: Query<U>, options: StringOptions = []) -> Query<V> {
-        Query<V>(.endsWith(node, column.node, options: options))
+        Query<V>(.comparison(operator: .endsWith, node, column.node, options: options))
     }
 
     /**
@@ -883,7 +883,11 @@ fileprivate indirect enum QueryNode {
         case lessThanEqual = "<="
         case greaterThan = ">"
         case greaterThanEqual = ">="
-        // etc.
+        case `in` = "IN"
+        case contains = "CONTAINS"
+        case beginsWith = "BEGINSWITH"
+        case endsWith = "ENDSWITH"
+        case like = "LIKE"
     }
 
     case any(_ child: QueryNode)
@@ -896,13 +900,7 @@ fileprivate indirect enum QueryNode {
     case or(_ lhs: QueryNode, _ rhs: QueryNode)
 
     case comparison(operator: Operator, _ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
-    case `in`(_ lhs: QueryNode, _ rhs: QueryNode)
     case between(_ lhs: QueryNode, lowerBound: QueryNode, upperBound: QueryNode)
-
-    case like(_ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
-    case strContains(_ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
-    case beginsWith(_ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
-    case endsWith(_ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
 
     case subqueryCount(_ child: QueryNode)
     case mapSubscript(_ lhs: QueryNode, collectionKeyPath: QueryNode, requiresNot: Bool)
@@ -979,21 +977,11 @@ private func buildPredicate(_ root: QueryNode, subqueryCount: Int = 0) -> (Strin
             buildCompoundExpression(lhs, "||", rhs, prefix: prefix)
         case .comparison(operator: let op, let lhs, let rhs, let options):
             buildExpression(lhs, "\(op.rawValue)\(strOptions(options))", rhs, prefix: prefix)
-        case .`in`(let lhs, let rhs):
-            buildExpression(lhs, "IN", rhs, prefix: prefix)
         case .between(let lhs, let lowerBound, let upperBound):
             formatStr.append("(")
             build(lhs)
             buildBetween(lowerBound, upperBound)
             formatStr.append(")")
-        case .strContains(let lhs, let rhs, let options):
-            buildExpression(lhs, "CONTAINS\(strOptions(options))", rhs, prefix: prefix)
-        case .beginsWith(let lhs, let rhs, let options):
-            buildExpression(lhs, "BEGINSWITH\(strOptions(options))", rhs, prefix: prefix)
-        case .endsWith(let lhs, let rhs, let options):
-            buildExpression(lhs, "ENDSWITH\(strOptions(options))", rhs, prefix: prefix)
-        case .like(let lhs, let rhs, let options):
-            buildExpression(lhs, "LIKE\(strOptions(options))", rhs, prefix: prefix)
         case .subqueryCount(let inner):
             subqueryCounter += 1
             let (collectionName, node) = SubqueryRewriter.rewrite(inner, subqueryCounter)
@@ -1038,22 +1026,12 @@ private struct SubqueryRewriter {
             return .or(rewrite(lhs), rewrite(rhs))
         case .comparison(operator: let op, let lhs, let rhs, options: let options):
             return .comparison(operator: op, rewrite(lhs), rewrite(rhs), options: options)
-        case .`in`(let lhs, let rhs):
-            return .`in`(rewrite(lhs), rewrite(rhs))
         case .between(let lhs, let lowerBound, let upperBound):
             return .between(rewrite(lhs), lowerBound: rewrite(lowerBound), upperBound: rewrite(upperBound))
-        case .strContains(let lhs, let rhs, let options):
-            return .strContains(rewrite(lhs), rewrite(rhs), options: options)
-        case .beginsWith(let lhs, let rhs, let options):
-            return .beginsWith(rewrite(lhs), rewrite(rhs), options: options)
-        case .endsWith(let lhs, let rhs, let options):
-            return .endsWith(rewrite(lhs), rewrite(rhs), options: options)
         case .subqueryCount(let inner):
             return .subqueryCount(inner)
         case .constant:
             return node
-        case let .like(lhs, rhs, options):
-            return .like(rewrite(lhs), rewrite(rhs), options: options)
         case .mapSubscript:
             throwRealmException("Subqueries do not support map subscripts.")
         }
