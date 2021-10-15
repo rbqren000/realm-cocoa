@@ -226,7 +226,7 @@ public struct Query<T: _RealmSchemaDiscoverable> {
     }
     /// :nodoc:
     public static func <= <U, V>(_ lhs: Query<U>, _ rhs: Query<V>) -> Query where U: _QueryNumeric, V: _QueryNumeric {
-        Query(.comparison(operator: .greaterThan, lhs.node, rhs.node, options: []))
+        Query(.comparison(operator: .lessThanEqual, lhs.node, rhs.node, options: []))
     }
 
     // MARK: Compound
@@ -912,19 +912,28 @@ private func buildPredicate(_ root: QueryNode, subqueryCount: Int = 0) -> (Strin
     let formatStr = NSMutableString()
     let arguments = NSMutableArray()
     var subqueryCounter = subqueryCount
-//    var mapRequiresClosingParenthesis = false
 
-//    func buildComparison(_ lhs: QueryNode, _ op: String, _ rhs: QueryNode) {
-//        build(lhs)
-//        formatStr.append(" \(op) ")
-//        build(rhs)
-//        if mapRequiresClosingParenthesis {
-//            formatStr.append(")")
-//            mapRequiresClosingParenthesis = false
-//        }
-//    }
+    func buildExpression(_ lhs: QueryNode,
+                         _ op: String,
+                         _ rhs: QueryNode,
+                         prefix: String? = nil) {
+        formatStr.append("(")
+        if let prefix = prefix {
+            formatStr.append(prefix)
+        }
+        build(lhs)
+        formatStr.append(" \(op) ")
+        build(rhs)
+        formatStr.append(")")
+    }
 
-    func buildCompound(_ lhs: QueryNode, _ op: String, _ rhs: QueryNode) {
+    func buildCompoundExpression(_ lhs: QueryNode,
+                                 _ op: String,
+                                 _ rhs: QueryNode,
+                                 prefix: String? = nil) {
+        if let prefix = prefix {
+            formatStr.append(prefix)
+        }
         formatStr.append("(")
         build(lhs)
         formatStr.append(" \(op) ")
@@ -947,40 +956,44 @@ private func buildPredicate(_ root: QueryNode, subqueryCount: Int = 0) -> (Strin
         return "[\(options.contains(.caseInsensitive) ? "c" : "")\(options.contains(.diacriticInsensitive) ? "d" : "")]"
     }
 
-    func build(_ node: QueryNode) {
+    func build(_ node: QueryNode, prefix: String? = nil) {
+        func appendPrefix(_ str: String) -> String {
+            if let prefix = prefix {
+                return prefix + str
+            }
+            return str
+        }
         switch node {
         case .any(let child):
-            formatStr.append("ANY ")
-            build(child)
+            build(child, prefix: appendPrefix("ANY "))
         case .constant(let value):
             formatStr.append("%@")
             arguments.add(value ?? NSNull())
         case .keyPath(let kp, _):
             formatStr.append(kp.joined(separator: "."))
         case .not(let child):
-            formatStr.append("NOT ")
-            build(child)
+            build(child, prefix: appendPrefix("NOT "))
         case .and(let lhs, let rhs):
-            buildCompound(lhs, "&&", rhs)
+            buildExpression(lhs, "&&", rhs, prefix: prefix)
         case .or(let lhs, let rhs):
-            buildCompound(lhs, "||", rhs)
+            buildCompoundExpression(lhs, "||", rhs, prefix: prefix)
         case .comparison(operator: let op, let lhs, let rhs, let options):
-            buildCompound(lhs, "\(op.rawValue)\(strOptions(options))", rhs)
+            buildExpression(lhs, "\(op.rawValue)\(strOptions(options))", rhs, prefix: prefix)
         case .`in`(let lhs, let rhs):
-            buildCompound(lhs, "IN", rhs)
+            buildExpression(lhs, "IN", rhs, prefix: prefix)
         case .between(let lhs, let lowerBound, let upperBound):
             formatStr.append("(")
             build(lhs)
             buildBetween(lowerBound, upperBound)
             formatStr.append(")")
         case .strContains(let lhs, let rhs, let options):
-            buildCompound(lhs, "CONTAINS\(strOptions(options))", rhs)
+            buildExpression(lhs, "CONTAINS\(strOptions(options))", rhs, prefix: prefix)
         case .beginsWith(let lhs, let rhs, let options):
-            buildCompound(lhs, "BEGINSWITH\(strOptions(options))", rhs)
+            buildExpression(lhs, "BEGINSWITH\(strOptions(options))", rhs, prefix: prefix)
         case .endsWith(let lhs, let rhs, let options):
-            buildCompound(lhs, "ENDSWITH\(strOptions(options))", rhs)
+            buildExpression(lhs, "ENDSWITH\(strOptions(options))", rhs, prefix: prefix)
         case .like(let lhs, let rhs, let options):
-            buildCompound(lhs, "LIKE\(strOptions(options))", rhs)
+            buildExpression(lhs, "LIKE\(strOptions(options))", rhs, prefix: prefix)
         case .subqueryCount(let inner):
             subqueryCounter += 1
             let (collectionName, node) = SubqueryRewriter.rewrite(inner, subqueryCounter)
