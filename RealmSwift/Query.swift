@@ -233,11 +233,11 @@ public struct Query<T: _RealmSchemaDiscoverable> {
 
     /// :nodoc:
     public static func && (_ lhs: Query, _ rhs: Query) -> Query {
-        Query(.and(lhs.node, rhs.node))
+        Query(.comparison(operator: .and, lhs.node, rhs.node, options: []))
     }
     /// :nodoc:
     public static func || (_ lhs: Query, _ rhs: Query) -> Query {
-        Query(.or(lhs.node, rhs.node))
+        Query(.comparison(operator: .or, lhs.node, rhs.node, options: []))
     }
 
     // MARK: Subscript
@@ -307,28 +307,32 @@ extension Query where T: RealmCollection {
 extension Query where T: RealmCollection, T.Element: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 }
 
 extension Query where T: RealmCollection, T.Element: OptionalProtocol, T.Element.Wrapped: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element.Wrapped>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element.Wrapped>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -445,28 +449,32 @@ extension Query where T: RealmKeyedCollection, T.Key == String {
 extension Query where T: RealmKeyedCollection, T.Value: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Value>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Value>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 }
 
 extension Query where T: RealmKeyedCollection, T.Value: OptionalProtocol, T.Value.Wrapped: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Value.Wrapped>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Value.Wrapped>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", isCollection: true), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", isCollection: true), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -643,8 +651,9 @@ extension Query where T: OptionalProtocol,
 extension Query where T: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, node, .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, node, .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, node, .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, node, .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
@@ -776,8 +785,9 @@ extension Query where T: _QueryBinary {
 extension Query where T: OptionalProtocol, T.Wrapped: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Wrapped>) -> Query<V> {
-        Query<V>(.and(.comparison(operator: .greaterThanEqual, node, .constant(range.lowerBound), options: []),
-                      .comparison(operator: .lessThan, node, .constant(range.upperBound), options: [])))
+        Query<V>(.comparison(operator: .and,
+                             .comparison(operator: .greaterThanEqual, node, .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, node, .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
@@ -875,8 +885,8 @@ private struct CollectionFlags: OptionSet {
 fileprivate indirect enum QueryNode {
 
     enum Operator: String {
-        case or = "OR"
-        case and = "AND"
+        case or = "||"
+        case and = "&&"
         case equal = "=="
         case notEqual = "!="
         case lessThan = "<"
@@ -891,13 +901,10 @@ fileprivate indirect enum QueryNode {
     }
 
     case any(_ child: QueryNode)
+    case not(_ child: QueryNode)
     case constant(_ value: Any?)
 
     case keyPath(_ value: [String], collection: CollectionFlags)
-
-    case not(_ child: QueryNode)
-    case and(_ lhs: QueryNode, _ rhs: QueryNode)
-    case or(_ lhs: QueryNode, _ rhs: QueryNode)
 
     case comparison(operator: Operator, _ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
     case between(_ lhs: QueryNode, lowerBound: QueryNode, upperBound: QueryNode)
@@ -971,12 +978,13 @@ private func buildPredicate(_ root: QueryNode, subqueryCount: Int = 0) -> (Strin
             formatStr.append(kp.joined(separator: "."))
         case .not(let child):
             build(child, prefix: appendPrefix("NOT "))
-        case .and(let lhs, let rhs):
-            buildExpression(lhs, "&&", rhs, prefix: prefix)
-        case .or(let lhs, let rhs):
-            buildCompoundExpression(lhs, "||", rhs, prefix: prefix)
         case .comparison(operator: let op, let lhs, let rhs, let options):
-            buildExpression(lhs, "\(op.rawValue)\(strOptions(options))", rhs, prefix: prefix)
+            switch op {
+            case .and, .or:
+                buildCompoundExpression(lhs, op.rawValue, rhs, prefix: prefix)
+            default:
+                buildExpression(lhs, "\(op.rawValue)\(strOptions(options))", rhs, prefix: prefix)
+            }
         case .between(let lhs, let lowerBound, let upperBound):
             formatStr.append("(")
             build(lhs)
@@ -1020,10 +1028,6 @@ private struct SubqueryRewriter {
             return node
         case .not(let child):
             return .not(rewrite(child))
-        case .and(let lhs, let rhs):
-            return .and(rewrite(lhs), rewrite(rhs))
-        case .or(let lhs, let rhs):
-            return .or(rewrite(lhs), rewrite(rhs))
         case .comparison(operator: let op, let lhs, let rhs, options: let options):
             return .comparison(operator: op, rewrite(lhs), rewrite(rhs), options: options)
         case .between(let lhs, let lowerBound, let upperBound):
