@@ -380,11 +380,11 @@ class QueryTests: TestCase {
         // ${ property.colName }
 
         % if property.enumName != None:
-        assertQuery(predicate:"(${ property.colName } == %@)", values: [${ property.enumName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } == %@)", values: [${ property.enumName }], expectedCount: 1) {
             $0.${ property.colName } == ${ property.value(1) }
         }
         % else:
-        assertQuery(predicate:"(${ property.colName } == %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } == %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName } == ${ property.value(1) }
         }
         % end
@@ -394,7 +394,7 @@ class QueryTests: TestCase {
         % for property in optProperties:
 
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } == %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } == %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } == nil
         }
         % end
@@ -451,11 +451,11 @@ class QueryTests: TestCase {
         // ${ property.colName }
 
         % if property.enumName != None:
-        assertQuery(predicate:"(${ property.colName } != %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } != %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } != ${ property.values[1]}
         }
         % else:
-        assertQuery(predicate:"(${ property.colName } != %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } != %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } != ${ property.value(1) }
         }
         % end
@@ -467,11 +467,11 @@ class QueryTests: TestCase {
         // ${ property.colName }
 
         % if property.enumName != None:
-        assertQuery(predicate:"(${ property.colName } != %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } != %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } != ${ property.value(1) }
         }
         % else:
-        assertQuery(predicate:"(${ property.colName } != %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } != %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } != ${ property.value(1) }
         }
         % end
@@ -481,7 +481,7 @@ class QueryTests: TestCase {
         % for property in optProperties:
 
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } != %@)", values: [NSNull()], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } != %@)", values: [NSNull()], expectedCount: 1) {
             $0.${ property.colName } != nil
         }
         % end
@@ -538,18 +538,18 @@ class QueryTests: TestCase {
         % for property in properties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } > ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [${ property.enumName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [${ property.enumName }], expectedCount: 1) {
             $0.${ property.colName } >= ${ property.value(1) }
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } > ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName } >= ${ property.value(1) }
         }
         % end
@@ -560,18 +560,18 @@ class QueryTests: TestCase {
         % for property in optProperties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } > ${ property.values[1]}
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [${ property.enumName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [${ property.enumName }], expectedCount: 1) {
             $0.${ property.colName } >= ${ property.values[1]}
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } > ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName } >= ${ property.value(1) }
         }
         % end
@@ -581,18 +581,18 @@ class QueryTests: TestCase {
         % for property in optProperties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } > nil
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } >= nil
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } > %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } > %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } > nil
         }
-        assertQuery(predicate:"(${ property.colName } >= %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } >= %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } >= nil
         }
         % end
@@ -617,18 +617,18 @@ class QueryTests: TestCase {
         % for property in properties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } < ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [${ property.enumName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [${ property.enumName }], expectedCount: 1) {
             $0.${ property.colName } <= ${ property.value(1) }
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } < ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName } <= ${ property.value(1) }
         }
         % end
@@ -639,18 +639,18 @@ class QueryTests: TestCase {
         % for property in optProperties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [${ property.enumName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [${ property.enumName }], expectedCount: 0) {
             $0.${ property.colName } < ${ property.values[1]}
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [${ property.enumName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [${ property.enumName }], expectedCount: 1) {
             $0.${ property.colName } <= ${ property.values[1]}
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName } < ${ property.value(1) }
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName } <= ${ property.value(1) }
         }
         % end
@@ -660,18 +660,18 @@ class QueryTests: TestCase {
         % for property in optProperties:
         % if property.enumName != None and property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } < nil
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } <= nil
         }
         % elif property.category == 'numeric':
         // ${ property.colName }
-        assertQuery(predicate:"(${ property.colName } < %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } < %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } < nil
         }
-        assertQuery(predicate:"(${ property.colName } <= %@)", values: [NSNull()], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName } <= %@)", values: [NSNull()], expectedCount: 0) {
             $0.${ property.colName } <= nil
         }
         % end
@@ -724,27 +724,27 @@ class QueryTests: TestCase {
     func testStringStartsWith() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH %@)",
                     values: ["fo"], expectedCount: 0) {
             $0.${ property.colName }.starts(with: "fo")
         }
 
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH %@)",
                     values: ["fo"], expectedCount: 0) {
             $0.${ property.colName }.starts(with: "fo", options: [])
         }
 
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH[c] %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH[c] %@)",
                     values: ["fo"], expectedCount: 1) {
             $0.${ property.colName }.starts(with: "fo", options: [.caseInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH[d] %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH[d] %@)",
                     values: ["fo"], expectedCount: 0) {
             $0.${ property.colName }.starts(with: "fo", options: [.diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH[cd] %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH[cd] %@)",
                     values: ["fo"], expectedCount: 1) {
             $0.${ property.colName }.starts(with: "fo", options: [.caseInsensitive, .diacriticInsensitive])
         }
@@ -761,27 +761,27 @@ class QueryTests: TestCase {
     func testStringEndsWith() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } ENDSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH %@)",
                     values: ["oo"], expectedCount: 0) {
             $0.${ property.colName }.ends(with: "oo")
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH %@)",
                     values: ["oo"], expectedCount: 0) {
             $0.${ property.colName }.ends(with: "oo", options: [])
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH[c] %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH[c] %@)",
                     values: ["oo"], expectedCount: 0) {
             $0.${ property.colName }.ends(with: "oo", options: [.caseInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH[d] %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH[d] %@)",
                     values: ["oo"], expectedCount: 1) {
             $0.${ property.colName }.ends(with: "oo", options: [.diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH[cd] %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH[cd] %@)",
                     values: ["oo"], expectedCount: 1) {
             $0.${ property.colName }.ends(with: "oo", options: [.caseInsensitive, .diacriticInsensitive])
         }
@@ -798,122 +798,122 @@ class QueryTests: TestCase {
     func testStringLike() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                                 values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.like("Foó")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.like("Foó", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.like("Foó", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f*"], expectedCount: 0) {
             $0.${ property.colName }.like("f*")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["f*"], expectedCount: 1) {
             $0.${ property.colName }.like("f*", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f*"], expectedCount: 0) {
             $0.${ property.colName }.like("f*", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["*ó"], expectedCount: 1) {
             $0.${ property.colName }.like("*ó")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["*ó"], expectedCount: 1) {
             $0.${ property.colName }.like("*ó", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["*ó"], expectedCount: 1) {
             $0.${ property.colName }.like("*ó", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f?ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f?ó")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["f?ó"], expectedCount: 1) {
             $0.${ property.colName }.like("f?ó", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f?ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f?ó", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f*ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f*ó")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["f*ó"], expectedCount: 1) {
             $0.${ property.colName }.like("f*ó", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f*ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f*ó", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f??ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f??ó")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["f??ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f??ó", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["f??ó"], expectedCount: 0) {
             $0.${ property.colName }.like("f??ó", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["*o*"], expectedCount: 1) {
             $0.${ property.colName }.like("*o*")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["*O*"], expectedCount: 1) {
             $0.${ property.colName }.like("*O*", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["*O*"], expectedCount: 0) {
             $0.${ property.colName }.like("*O*", caseInsensitive: false)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["?o?"], expectedCount: 1) {
             $0.${ property.colName }.like("?o?")
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE[c] %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE[c] %@)",
                     values: ["?O?"], expectedCount: 1) {
             $0.${ property.colName }.like("?O?", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName } LIKE %@)",
+        assertQuery(predicate: "(${ property.colName } LIKE %@)",
                     values: ["?O?"], expectedCount: 0) {
             $0.${ property.colName }.like("?O?", caseInsensitive: false)
         }
@@ -930,27 +930,27 @@ class QueryTests: TestCase {
     func testStringContains() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } CONTAINS %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.contains("Foó")
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.contains("Foó", options: [])
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS[c] %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS[c] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.contains("Foó", options: [.caseInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS[d] %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS[d] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.contains("Foó", options: [.diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS[cd] %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS[cd] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.contains("Foó", options: [.caseInsensitive, .diacriticInsensitive])
         }
@@ -994,27 +994,27 @@ class QueryTests: TestCase {
     func testStringEquals() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } == %@)",
+        assertQuery(predicate: "(${ property.colName } == %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.equals("Foó")
         }
 
-        assertQuery(predicate:"(${ property.colName } == %@)",
+        assertQuery(predicate: "(${ property.colName } == %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.equals("Foó", options: [])
         }
 
-        assertQuery(predicate:"(${ property.colName } ==[c] %@)",
+        assertQuery(predicate: "(${ property.colName } ==[c] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.equals("Foó", options: [.caseInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } ==[d] %@)",
+        assertQuery(predicate: "(${ property.colName } ==[d] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.equals("Foó", options: [.diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } ==[cd] %@)",
+        assertQuery(predicate: "(${ property.colName } ==[cd] %@)",
                     values: ["Foó"], expectedCount: 1) {
             $0.${ property.colName }.equals("Foó", options: [.caseInsensitive, .diacriticInsensitive])
         }
@@ -1051,27 +1051,27 @@ class QueryTests: TestCase {
     func testStringNotEquals() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'string':
-        assertQuery(predicate:"(${ property.colName } != %@)",
+        assertQuery(predicate: "(${ property.colName } != %@)",
                     values: ["Foó"], expectedCount: 0) {
             $0.${ property.colName }.notEquals("Foó")
         }
 
-        assertQuery(predicate:"(${ property.colName } != %@)",
+        assertQuery(predicate: "(${ property.colName } != %@)",
                     values: ["Foó"], expectedCount: 0) {
             $0.${ property.colName }.notEquals("Foó", options: [])
         }
 
-        assertQuery(predicate:"(${ property.colName } !=[c] %@)",
+        assertQuery(predicate: "(${ property.colName } !=[c] %@)",
                     values: ["Foó"], expectedCount: 0) {
             $0.${ property.colName }.notEquals("Foó", options: [.caseInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } !=[d] %@)",
+        assertQuery(predicate: "(${ property.colName } !=[d] %@)",
                     values: ["Foó"], expectedCount: 0) {
             $0.${ property.colName }.notEquals("Foó", options: [.diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName } !=[cd] %@)",
+        assertQuery(predicate: "(${ property.colName } !=[cd] %@)",
                     values: ["Foó"], expectedCount: 0) {
             $0.${ property.colName }.notEquals("Foó", options: [.caseInsensitive, .diacriticInsensitive])
         }
@@ -1110,7 +1110,7 @@ class QueryTests: TestCase {
     func testBinarySearchQueries() {
         % for property in properties + optProperties:
         % if property.enumName == None and property.category == 'binary':
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH %@)",
                     values: [Data(count: 28)], expectedCount: 1) {
             $0.${ property.colName }.starts(with: Data(count: 28))
         }
@@ -1120,7 +1120,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.starts(with: Data(count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH %@)",
                     values: [Data(count: 28)], expectedCount: 1) {
             $0.${ property.colName }.ends(with: Data(count: 28))
         }
@@ -1130,7 +1130,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.ends(with: Data(count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS %@)",
                     values: [Data(count: 28)], expectedCount: 1) {
             $0.${ property.colName }.contains(Data(count: 28))
         }
@@ -1140,7 +1140,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.contains(Data(count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } == %@)",
+        assertQuery(predicate: "(${ property.colName } == %@)",
                     values: [Data(count: 28)], expectedCount: 0) {
             $0.${ property.colName }.equals(Data(count: 28))
         }
@@ -1150,7 +1150,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.equals(Data(count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } != %@)",
+        assertQuery(predicate: "(${ property.colName } != %@)",
                     values: [Data(count: 28)], expectedCount: 1) {
             $0.${ property.colName }.notEquals(Data(count: 28))
         }
@@ -1160,17 +1160,17 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.notEquals(Data(count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } BEGINSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } BEGINSWITH %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 0) {
             $0.${ property.colName }.starts(with: Data(repeating: 1, count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } ENDSWITH %@)",
+        assertQuery(predicate: "(${ property.colName } ENDSWITH %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 0) {
             $0.${ property.colName }.ends(with: Data(repeating: 1, count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 0) {
             $0.${ property.colName }.contains(Data(repeating: 1, count: 28))
         }
@@ -1180,7 +1180,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.contains(Data(repeating: 1, count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } CONTAINS %@)",
+        assertQuery(predicate: "(${ property.colName } CONTAINS %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 0) {
             $0.${ property.colName }.contains(Data(repeating: 1, count: 28))
         }
@@ -1190,7 +1190,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.contains(Data(repeating: 1, count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } == %@)",
+        assertQuery(predicate: "(${ property.colName } == %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 0) {
             $0.${ property.colName }.equals(Data(repeating: 1, count: 28))
         }
@@ -1200,7 +1200,7 @@ class QueryTests: TestCase {
             !$0.${ property.colName }.equals(Data(repeating: 1, count: 28))
         }
 
-        assertQuery(predicate:"(${ property.colName } != %@)",
+        assertQuery(predicate: "(${ property.colName } != %@)",
                     values: [Data(repeating: 1, count: 28)], expectedCount: 1) {
             $0.${ property.colName }.notEquals(Data(repeating: 1, count: 28))
         }
@@ -1319,7 +1319,7 @@ class QueryTests: TestCase {
         % value = property.enumName if property.enumName != None else property.foundationValue(1)
         assertCollectionQuery(on: \.${ property.colName },
                               isList: true,
-                              predicate:"(${ property.colName } == %@)",
+                              predicate: "(${ property.colName } == %@)",
                               values: [${ value }],
                               expectedCount: 1) {
             $0.${ property.colName } == ${ property.value(1) }
@@ -1431,7 +1431,7 @@ class QueryTests: TestCase {
         % value = property.enumName if property.enumName != None else property.foundationValue(1)
         assertCollectionQuery(on: \.${ property.colName },
                               isList: false,
-                              predicate:"(${ property.colName } == %@)",
+                              predicate: "(${ property.colName } == %@)",
                               values: [${ value }],
                               expectedCount: 1) {
             $0.${ property.colName } == ${ property.value(1) }
@@ -1467,43 +1467,43 @@ class QueryTests: TestCase {
 
     func testMapAllKeys() {
         % for property in mapProperties + optMapProperties:
-        assertQuery(predicate:"(${ property.colName }.@allKeys == %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys == %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys == "foo"
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys != %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys != %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys != "foo"
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys CONTAINS[cd] %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys CONTAINS[cd] %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.contains("foo", options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys CONTAINS %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys CONTAINS %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.contains("foo")
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys BEGINSWITH[cd] %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys BEGINSWITH[cd] %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.starts(with: "foo", options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys BEGINSWITH %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys BEGINSWITH %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.starts(with: "foo")
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys ENDSWITH[cd] %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys ENDSWITH[cd] %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.ends(with: "foo", options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys ENDSWITH %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys ENDSWITH %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.ends(with: "foo")
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys LIKE[c] %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys LIKE[c] %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.like("foo", caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allKeys LIKE %@)", values: ["foo"], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allKeys LIKE %@)", values: ["foo"], expectedCount: 1) {
             $0.${ property.colName }.keys.like("foo")
         }
 
@@ -1512,61 +1512,61 @@ class QueryTests: TestCase {
 
     func testMapAllValues() {
         % for property in mapProperties + optMapProperties:
-        assertQuery(predicate:"(${ property.colName }.@allValues == %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues == %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values == ${ property.value(0) }
         }
 
         % count = 0 if property.category == 'bool' else 1
-        assertQuery(predicate:"(${ property.colName }.@allValues != %@)", values: [${ property.foundationValue(0) }], expectedCount: ${ count}) {
+        assertQuery(predicate: "(${ property.colName }.@allValues != %@)", values: [${ property.foundationValue(0) }], expectedCount: ${ count}) {
             $0.${ property.colName }.values != ${ property.value(0) }
         }
         % if property.category == 'numeric':
-        assertQuery(predicate:"(${ property.colName }.@allValues > %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues > %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values > ${ property.value(0) }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues >= %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues >= %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values >= ${ property.value(0) }
         }
-        assertQuery(predicate:"(${ property.colName }.@allValues < %@)", values: [${ property.foundationValue(0) }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@allValues < %@)", values: [${ property.foundationValue(0) }], expectedCount: 0) {
             $0.${ property.colName }.values < ${ property.value(0) }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues <= %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues <= %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values <= ${ property.value(0) }
         }
         % end
 
         % if property.category == 'string':
-        assertQuery(predicate:"(${ property.colName }.@allValues CONTAINS[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues CONTAINS[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.contains(${ property.value(0) }, options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues CONTAINS %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues CONTAINS %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.contains(${ property.value(0) })
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues BEGINSWITH[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues BEGINSWITH[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.starts(with: ${ property.value(0) }, options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues BEGINSWITH %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues BEGINSWITH %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.starts(with: ${ property.value(0) })
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues ENDSWITH[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues ENDSWITH[cd] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.ends(with: ${ property.value(0) }, options: [.caseInsensitive, .diacriticInsensitive])
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues ENDSWITH %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues ENDSWITH %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.ends(with: ${ property.value(0) })
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues LIKE[c] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues LIKE[c] %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.like(${ property.value(0) }, caseInsensitive: true)
         }
 
-        assertQuery(predicate:"(${ property.colName }.@allValues LIKE %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@allValues LIKE %@)", values: [${ property.foundationValue(0) }], expectedCount: 1) {
             $0.${ property.colName }.values.like(${ property.value(0) })
         }
         % end
@@ -1741,7 +1741,7 @@ class QueryTests: TestCase {
         % for property in properties + optProperties:
         % value = property.enumName if property.enumName != None else property.foundationValue(1)
         assertMapQuery(on: \.${ property.colName },
-                       predicate:"(${ property.colName } == %@)",
+                       predicate: "(${ property.colName } == %@)",
                        values: [${ value }],
                        expectedCount: 1) {
             $0.${ property.colName } == ${ property.value(1) }
@@ -2239,39 +2239,39 @@ class QueryTests: TestCase {
             object.${ property.colName }["baz"] = ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg > %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg > %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.avg > ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg < %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg < %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.avg < ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg == %@)", values: [${property.value(1)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg == %@)", values: [${property.value(1)}], expectedCount: 1) {
             $0.${ property.colName }.avg == ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg >= %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg >= %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.avg >= ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg >= %@)", values: [${property.value(1)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg >= %@)", values: [${property.value(1)}], expectedCount: 1) {
             $0.${ property.colName }.avg >= ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg <= %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg <= %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.avg <= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg <= %@)", values: [${property.value(1)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg <= %@)", values: [${property.value(1)}], expectedCount: 1) {
             $0.${ property.colName }.avg <= ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg != %@)", values: [${property.value(1)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@avg != %@)", values: [${property.value(1)}], expectedCount: 0) {
             $0.${ property.colName }.avg != ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@avg != %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@avg != %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.avg != ${property.value(0)}
         }
         % end
@@ -2346,39 +2346,39 @@ class QueryTests: TestCase {
             object.${ property.colName }["baz"] = ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min > %@)", values: [${property.value(0)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@min > %@)", values: [${property.value(0)}], expectedCount: 0) {
             $0.${ property.colName }.min > ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min < %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min < %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.min < ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min == %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min == %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.min == ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min >= %@)", values: [${property.value(1)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@min >= %@)", values: [${property.value(1)}], expectedCount: 0) {
             $0.${ property.colName }.min >= ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min >= %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min >= %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.min >= ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min <= %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min <= %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.min <= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min <= %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min <= %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.min <= ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min != %@)", values: [${property.value(0)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@min != %@)", values: [${property.value(0)}], expectedCount: 0) {
             $0.${ property.colName }.min != ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@min != %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@min != %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.min != ${property.value(2)}
         }
         % end
@@ -2452,39 +2452,39 @@ class QueryTests: TestCase {
             object.${ property.colName }["baz"] = ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max > %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max > %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.max > ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max < %@)", values: [${property.value(2)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@max < %@)", values: [${property.value(2)}], expectedCount: 0) {
             $0.${ property.colName }.max < ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max == %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max == %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.max == ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max >= %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max >= %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.max >= ${property.value(0)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max >= %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max >= %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.max >= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max <= %@)", values: [${property.value(1)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@max <= %@)", values: [${property.value(1)}], expectedCount: 0) {
             $0.${ property.colName }.max <= ${property.value(1)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max <= %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max <= %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.max <= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max != %@)", values: [${property.value(2)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@max != %@)", values: [${property.value(2)}], expectedCount: 0) {
             $0.${ property.colName }.max != ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@max != %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@max != %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.max != ${property.value(0)}
         }
         % end
@@ -2567,43 +2567,43 @@ class QueryTests: TestCase {
         }
 
         let sum${ property.colName } = ${property.value(0)} + ${property.value(1)} + ${property.value(2)}
-        assertQuery(predicate:"(${ property.colName }.@sum > %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum > %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.sum > ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum < %@)", values: [${property.value(2)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@sum < %@)", values: [${property.value(2)}], expectedCount: 0) {
             $0.${ property.colName }.sum < ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum == %@)", values: [${property.value(2)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@sum == %@)", values: [${property.value(2)}], expectedCount: 0) {
             $0.${ property.colName }.sum == ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum == %@)", values: [sum${ property.colName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum == %@)", values: [sum${ property.colName }], expectedCount: 1) {
             $0.${ property.colName }.sum == sum${ property.colName }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum >= %@)", values: [${property.value(2)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum >= %@)", values: [${property.value(2)}], expectedCount: 1) {
             $0.${ property.colName }.sum >= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum >= %@)", values: [sum${ property.colName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum >= %@)", values: [sum${ property.colName }], expectedCount: 1) {
             $0.${ property.colName }.sum >= sum${ property.colName }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum <= %@)", values: [${property.value(2)}], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@sum <= %@)", values: [${property.value(2)}], expectedCount: 0) {
             $0.${ property.colName }.sum <= ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum <= %@)", values: [sum${ property.colName }], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum <= %@)", values: [sum${ property.colName }], expectedCount: 1) {
             $0.${ property.colName }.sum <= sum${ property.colName }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum != %@)", values: [sum${ property.colName }], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@sum != %@)", values: [sum${ property.colName }], expectedCount: 0) {
             $0.${ property.colName }.sum != sum${ property.colName }
         }
 
-        assertQuery(predicate:"(${ property.colName }.@sum != %@)", values: [${property.value(0)}], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@sum != %@)", values: [${property.value(0)}], expectedCount: 1) {
             $0.${ property.colName }.sum != ${property.value(0)}
         }
         % end
@@ -2683,43 +2683,43 @@ class QueryTests: TestCase {
             object.${ property.colName }["baz"] = ${property.value(2)}
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count > %@)", values: [1], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@count > %@)", values: [1], expectedCount: 1) {
             $0.${ property.colName }.count > 1
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count < %@)", values: [1], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@count < %@)", values: [1], expectedCount: 0) {
             $0.${ property.colName }.count < 1
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count == %@)", values: [3], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@count == %@)", values: [3], expectedCount: 1) {
             $0.${ property.colName }.count == 3
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count == %@)", values: [2], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@count == %@)", values: [2], expectedCount: 0) {
             $0.${ property.colName }.count == 2
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count >= %@)", values: [3], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@count >= %@)", values: [3], expectedCount: 1) {
             $0.${ property.colName }.count >= 3
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count >= %@)", values: [4], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@count >= %@)", values: [4], expectedCount: 0) {
             $0.${ property.colName }.count >= 4
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count <= %@)", values: [3], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@count <= %@)", values: [3], expectedCount: 1) {
             $0.${ property.colName }.count <= 3
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count <= %@)", values: [2], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@count <= %@)", values: [2], expectedCount: 0) {
             $0.${ property.colName }.count <= 2
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count != %@)", values: [3], expectedCount: 0) {
+        assertQuery(predicate: "(${ property.colName }.@count != %@)", values: [3], expectedCount: 0) {
             $0.${ property.colName }.count != 3
         }
 
-        assertQuery(predicate:"(${ property.colName }.@count != %@)", values: [0], expectedCount: 1) {
+        assertQuery(predicate: "(${ property.colName }.@count != %@)", values: [0], expectedCount: 1) {
             $0.${ property.colName }.count != 0
         }
         % end
