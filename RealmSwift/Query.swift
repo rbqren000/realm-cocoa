@@ -106,9 +106,9 @@ public struct Query<T: _RealmSchemaDiscoverable> {
     /// - Parameter isPrimitive: True if performing a query on a primitive collection.
     public init(isPrimitive: Bool = false) {
         if isPrimitive {
-            node = .keyPath(["self"], collection: [.rootIsCollection, .finalIsCollection])
+            node = .keyPath(["self"], isCollection: true)
         } else {
-            node = .keyPath([], collection: [])
+            node = .keyPath([], isCollection: true)
         }
     }
 
@@ -120,43 +120,32 @@ public struct Query<T: _RealmSchemaDiscoverable> {
 
     private func appendKeyPath(_ keyPath: String, isCollection: Bool) -> QueryNode {
         if case let .keyPath(kp, c) = node {
-            var flags = c
-            if kp.count == 0 {
-                if isCollection {
-                    flags = [.rootIsCollection, .finalIsCollection]
-                } else {
-                    flags = []
-                }
-            } else if isCollection {
-                flags.insert(.finalIsCollection)
-            }
-
-            return .keyPath(kp + [keyPath], collection: flags)
+            return .keyPath(kp + [keyPath], isCollection: c)
         } else if case let .mapSubscript(lhs, mapKeyPath, requiresNot) = node, case let .keyPath(kp, c) = mapKeyPath {
-            return .mapSubscript(lhs, collectionKeyPath: .keyPath(kp + [keyPath], collection: c),
+            return .mapSubscript(lhs, collectionKeyPath: .keyPath(kp + [keyPath], isCollection: c),
                                  requiresNot: requiresNot)
         }
         throwRealmException("Cannot apply a keypath to \(buildPredicate(node))")
     }
 
     private func extractCollectionName() -> QueryNode {
-        if case let .keyPath(kp, flags) = node {
+        if case let .keyPath(kp, isCollection) = node {
             if !kp.isEmpty {
-                return .keyPath([kp[0]], collection: flags)
+                return .keyPath([kp[0]], isCollection: isCollection)
             }
         }
         throwRealmException("Cannot apply a keypath to \(buildPredicate(node))")
     }
 
     private func buildCollectionAggregateKeyPath(_ aggregate: String) -> QueryNode {
-        if case let .keyPath(kp, flags) = node {
+        if case let .keyPath(kp, isCollection) = node {
             var keyPaths = kp
             if keyPaths.count > 1 {
                 keyPaths.insert(aggregate, at: 1)
             } else {
                 keyPaths.append(aggregate)
             }
-            return .keyPath(keyPaths, collection: flags)
+            return .keyPath(keyPaths, isCollection: isCollection)
         }
         throwRealmException("Cannot apply a keypath to \(buildPredicate(node))")
     }
@@ -873,15 +862,6 @@ extension Optional: _QueryBinary where Wrapped: _QueryBinary { }
 
 // MARK: QueryNode -
 
-private struct CollectionFlags: OptionSet {
-    public let rawValue: Int8
-    public init(rawValue: Int8) {
-        self.rawValue = rawValue
-    }
-    static let rootIsCollection = CollectionFlags(rawValue: 1)
-    static let finalIsCollection = CollectionFlags(rawValue: 2)
-}
-
 fileprivate indirect enum QueryNode {
 
     enum Operator: String {
@@ -904,7 +884,7 @@ fileprivate indirect enum QueryNode {
     case not(_ child: QueryNode)
     case constant(_ value: Any?)
 
-    case keyPath(_ value: [String], collection: CollectionFlags)
+    case keyPath(_ value: [String], isCollection: Bool)
 
     case comparison(operator: Operator, _ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
     case between(_ lhs: QueryNode, lowerBound: QueryNode, upperBound: QueryNode)
@@ -1017,13 +997,13 @@ private struct SubqueryRewriter {
         switch node {
         case .any(let child):
             return .any(rewrite(child))
-        case .keyPath(let kp, let collectionFlags):
-            if collectionFlags.contains(.rootIsCollection) {
+        case .keyPath(let kp, let isCollection):
+            if isCollection {
                 precondition(kp.count > 0)
                 collectionName = kp[0]
                 var copy = kp
                 copy[0] = "$col\(counter)"
-                return .keyPath(copy, collection: collectionFlags.intersection([.finalIsCollection]))
+                return .keyPath(copy, isCollection: isCollection)
             }
             return node
         case .not(let child):
