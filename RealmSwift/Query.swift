@@ -234,7 +234,7 @@ public struct Query<T: _RealmSchemaDiscoverable> {
 
     /// :nodoc:
     public subscript<V>(dynamicMember member: KeyPath<T, V>) -> Query<V> where T: ObjectBase {
-        return Query<V>(appendKeyPath(_name(for: member), options: []))
+        Query<V>(appendKeyPath(_name(for: member), options: []))
     }
     /// :nodoc:
     public subscript<V: RealmKeyedCollection>(dynamicMember member: KeyPath<T, V>) -> Query<V> where T: ObjectBase {
@@ -268,7 +268,7 @@ public struct Query<T: _RealmSchemaDiscoverable> {
 extension Query where T: OptionalProtocol {
     /// :nodoc:
     public subscript<V>(dynamicMember member: KeyPath<T.Wrapped, V>) -> Query<V> where T.Wrapped: ObjectBase {
-        return Query<V>(appendKeyPath(_name(for: member), options: []))
+        Query<V>(appendKeyPath(_name(for: member), options: []))
     }
 }
 
@@ -302,15 +302,15 @@ extension Query where T: RealmCollection, T.Element: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", options: []), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, appendKeyPath("@max", options: []), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", options: []), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", options: []), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -318,15 +318,15 @@ extension Query where T: RealmCollection, T.Element: OptionalProtocol, T.Element
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", options: []), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, appendKeyPath("@max", options: []), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, appendKeyPath("@min", options: []), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, appendKeyPath("@max", options: []), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -590,11 +590,11 @@ extension Query where T: OptionalProtocol,
                       T.Wrapped.RawValue: _RealmSchemaDiscoverable {
     /// :nodoc:
     public static func == <V>(_ lhs: Query<T>, _ rhs: T) -> Query<V> {
-        return Query<V>(.comparison(operator: .equal, lhs.node, lhs.enumValue(rhs), options: []))
+        Query<V>(.comparison(operator: .equal, lhs.node, lhs.enumValue(rhs), options: []))
     }
     /// :nodoc:
     public static func != <V>(_ lhs: Query<T>, _ rhs: T) -> Query<V> {
-        return Query<V>(.comparison(operator: .notEqual, lhs.node, lhs.enumValue(rhs), options: []))
+        Query<V>(.comparison(operator: .notEqual, lhs.node, lhs.enumValue(rhs), options: []))
     }
 
     private func enumValue(_ rhs: T) -> QueryNode {

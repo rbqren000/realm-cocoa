@@ -1272,11 +1272,11 @@ class QueryTests: TestCase {
     func testListContainsRange() {
         % for property in listProperties + optListProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
@@ -1354,11 +1354,11 @@ class QueryTests: TestCase {
     func testSetContainsRange() {
         % for property in setProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
@@ -1367,11 +1367,11 @@ class QueryTests: TestCase {
         % end
         % for property in optSetProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
