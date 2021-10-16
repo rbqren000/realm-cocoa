@@ -99,10 +99,14 @@ import Realm
     /**
      Returns the index of the first object matching the given query, or `nil` if no objects match.
 
+     - Note: This should only be used with classes using the `@Persistable` property declaration.
+
      - Usage:
      ```
      obj.index(matching: { $0.fooCol < 456 })
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure with which to filter the objects.
      */
@@ -200,6 +204,8 @@ import Realm
         ($0.fooCol > 5) && ($0.barCol == "foobar")
      }
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure with which to filter the objects.
      */

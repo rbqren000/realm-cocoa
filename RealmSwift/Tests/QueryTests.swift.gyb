@@ -1272,11 +1272,11 @@ class QueryTests: TestCase {
     func testListContainsRange() {
         % for property in listProperties + optListProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
@@ -1354,11 +1354,11 @@ class QueryTests: TestCase {
     func testSetContainsRange() {
         % for property in setProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
@@ -1367,11 +1367,11 @@ class QueryTests: TestCase {
         % end
         % for property in optSetProperties:
         % if property.category == 'numeric':
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max <= %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max <= %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 1) {
             $0.${ property.colName }.contains(${ property.value(0) }...${ property.value(1) })
         }
-        assertQuery(predicate: "((${ property.colName }.@min >= %@) && (${ property.colName }.@max < %@))",
+        assertQuery(predicate: "((ANY ${ property.colName }.@min >= %@) && (ANY ${ property.colName }.@max < %@))",
                     values: [${ property.foundationValue(0) }, ${ property.foundationValue(1) }], expectedCount: 0) {
             $0.${ property.colName }.contains(${ property.value(0) }..<${ property.value(1) })
         }
@@ -2094,6 +2094,15 @@ class QueryTests: TestCase {
     }
 
     func testSubquery() {
+        // ANY
+        assertQuery(predicate: "((ANY arrayCol.intCol != %@) && (ANY arrayCol.objectCol.intCol > %@))", values: [123, 456], expectedCount: 0) {
+            ($0.arrayCol.intCol != 123) && ($0.arrayCol.objectCol.intCol > 456)
+        }
+
+        assertQuery(predicate: "((ANY arrayCol.optIntCol != %@) && (ANY arrayCol.objectCol.optIntCol > %@))", values: [123, 456], expectedCount: 0) {
+            ($0.arrayCol.optIntCol != 123) && ($0.arrayCol.objectCol.optIntCol > 456)
+        }
+
         // List
 
         // Count of results will be 0 because there are no `ModernAllTypesObject`s in the list.
@@ -3027,11 +3036,11 @@ class QueryTests: TestCase {
 
         assertThrows(assertQuery(predicate: "", values: [], expectedCount: 1) {
             $0.arrayCol == $0.arrayCol
-        }, reason: "Key paths that include a collection property must use aggregate operations")
+        }, reason: "Comparing two collection columns is not permitted.")
 
         assertThrows(assertQuery(predicate: "", values: [], expectedCount: 1) {
             $0.arrayCol != $0.arrayCol
-        }, reason: "Key paths that include a collection property must use aggregate operations")
+        }, reason: "Comparing two collection columns is not permitted.")
 
         assertQuery(predicate: "(intCol > intCol)", values: [], expectedCount: 0) {
             $0.intCol > $0.intCol

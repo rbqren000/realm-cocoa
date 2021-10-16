@@ -124,6 +124,8 @@ public final class MutableSet<Element: RealmCollectionValue>: RLMSwiftCollection
      }
      ```
 
+     - Note: See `Query` for more information on what query operations are available.
+
      - parameter queryFn: The query with which to filter the objects.
      */
     public func `where`(_ queryFn: ((Query<Element>) -> Query<Element>)) -> Results<Element> {

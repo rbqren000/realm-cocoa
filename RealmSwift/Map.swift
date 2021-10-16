@@ -275,6 +275,8 @@ public final class Map<Key, Value>: RLMSwiftCollectionBase where Key: _MapKey, V
      }
      ```
 
+     - Note: See `Query` for more information on what query operations are available.
+
      - parameter queryFn: The query closure with which to filter the objects.
      */
     public func `where`(_ queryFn: ((Query<Value>) -> Query<Value>)) -> Results<Value> {

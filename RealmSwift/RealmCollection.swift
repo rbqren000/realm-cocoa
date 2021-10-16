@@ -314,10 +314,14 @@ public protocol RealmCollection: RealmCollectionBase {
     /**
      Returns the index of the first object matching the query, or `nil` if no objects match.
 
+     - Note: This should only be used with classes using the `@Persistable` property declaration.
+
      - Usage:
      ```
      obj.index(matching: { $0.fooCol < 456 })
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure to use to filter the objects.
      */
@@ -362,12 +366,16 @@ public protocol RealmCollection: RealmCollectionBase {
     /**
      Returns a `Results` containing all objects matching the given query in the collection.
 
+     - Note: This should only be used with classes using the `@Persistable` property declaration.
+
      - Usage:
      ```
      myCol.where {
         ($0.fooCol > 5) && ($0.barCol == "foobar")
      }
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure to use to filter the objects.
      */
@@ -1272,10 +1280,14 @@ public struct AnyRealmCollection<Element: RealmCollectionValue>: RealmCollection
     /**
      Returns the index of the first object matching the given query, or `nil` if no objects match.
 
+     - Note: This should only be used with classes using the `@Persistable` property declaration.
+
      - Usage:
      ```
      obj.index(matching: { $0.fooCol < 456 })
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure with which to filter the objects.
      */
@@ -1315,6 +1327,8 @@ public struct AnyRealmCollection<Element: RealmCollectionValue>: RealmCollection
         ($0.fooCol > 5) && ($0.barCol == "foobar")
      }
      ```
+
+     - Note: See `Query` for more information on what query operations are available.
 
      - parameter queryFn: The query closure with which to filter the objects.
      */
