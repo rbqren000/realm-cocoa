@@ -141,7 +141,7 @@ public struct Query<T: _RealmSchemaDiscoverable> {
         throwRealmException("Cannot apply a keypath to \(buildPredicate(node))")
     }
 
-    private func node(subtracting options: KeyPathOptions, append keyPath: String? = nil) -> QueryNode {
+    private func keyPath(subtracting options: KeyPathOptions, append keyPath: String? = nil) -> QueryNode {
         if case let .keyPath(kp, o) = node {
             if let keyPath = keyPath {
                 return .keyPath(kp + [keyPath], options: [o.subtracting(options)])
@@ -282,14 +282,14 @@ extension Query where T: RealmCollection {
 
     /// Query the count of the objects in the collection.
     public var count: Query<Int> {
-        Query<Int>(node(subtracting: [.requiresAny], append: "@count"))
+        Query<Int>(keyPath(subtracting: [.requiresAny], append: "@count"))
     }
 }
 
 extension Query where T: RealmCollection {
     /// Checks if an element exists in this collection.
     public func contains<V>(_ value: T.Element) -> Query<V> {
-        Query<V>(.comparison(operator: .in, .constant(value), node(subtracting: [.requiresAny]), options: []))
+        Query<V>(.comparison(operator: .in, .constant(value), keyPath(subtracting: [.requiresAny]), options: []))
     }
 
     /// Checks if any elements contained in the given array are present in the collection.
@@ -302,15 +302,15 @@ extension Query where T: RealmCollection, T.Element: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -318,15 +318,15 @@ extension Query where T: RealmCollection, T.Element: OptionalProtocol, T.Element
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Element.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Element.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -366,22 +366,22 @@ extension Query where T: RealmCollection,
                       T.Element: _QueryNumeric {
     /// Returns the minimum value in the collection.
     public var min: Query<T.Element> {
-        Query<T.Element>(node(subtracting: [.requiresAny], append: "@min"))
+        Query<T.Element>(keyPath(subtracting: [.requiresAny], append: "@min"))
     }
 
     /// Returns the maximum value in the collection.
     public var max: Query<T.Element> {
-        Query<T.Element>(node(subtracting: [.requiresAny], append: "@max"))
+        Query<T.Element>(keyPath(subtracting: [.requiresAny], append: "@max"))
     }
 
     /// Returns the average in the collection.
     public var avg: Query<T.Element> {
-        Query<T.Element>(node(subtracting: [.requiresAny], append: "@avg"))
+        Query<T.Element>(keyPath(subtracting: [.requiresAny], append: "@avg"))
     }
 
     /// Returns the sum of all the values in the collection.
     public var sum: Query<T.Element> {
-        Query<T.Element>(node(subtracting: [.requiresAny], append: "@sum"))
+        Query<T.Element>(keyPath(subtracting: [.requiresAny], append: "@sum"))
     }
 }
 
@@ -400,7 +400,7 @@ extension Query where T: RealmKeyedCollection {
     /// Creates an expression that allows an equals comparison on a maps keys on the lhs, and on the rhs
     /// the ability to compare values in the map. e.g. `((mapString.@allKeys == %@) && NOT mapString CONTAINS %@)`
     private func mapSubscript<U>(_ member: T.Key) -> Query<U> where T.Key: _RealmSchemaDiscoverable {
-        Query<U>(.mapSubscript(.comparison(operator: .equal, node(subtracting: [.requiresAny], append: "@allKeys"),
+        Query<U>(.mapSubscript(.comparison(operator: .equal, keyPath(subtracting: [.requiresAny], append: "@allKeys"),
                                            .constant(member), options: []),
                                collectionKeyPath: extractCollectionName(),
                                requiresNot: false))
@@ -415,11 +415,11 @@ extension Query where T: RealmKeyedCollection {
 extension Query where T: RealmKeyedCollection, T.Key: _RealmSchemaDiscoverable {
     /// Checks if an element exists in this collection.
     public func contains<V>(_ value: T.Value) -> Query<V> {
-        Query<V>(.comparison(operator: .in, .constant(value), node(subtracting: [.requiresAny]), options: []))
+        Query<V>(.comparison(operator: .in, .constant(value), keyPath(subtracting: [.requiresAny]), options: []))
     }
     /// Allows a query over all values in the Map.
     public var values: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@allValues"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@allValues"))
     }
     /// :nodoc:
     public subscript(member: T.Key) -> Query<T.Value> {
@@ -430,7 +430,7 @@ extension Query where T: RealmKeyedCollection, T.Key: _RealmSchemaDiscoverable {
 extension Query where T: RealmKeyedCollection, T.Key: _RealmSchemaDiscoverable, T.Value: OptionalProtocol, T.Value.Wrapped: _RealmSchemaDiscoverable {
     /// Allows a query over all values in the Map.
     public var values: Query<T.Value.Wrapped> {
-        Query<T.Value.Wrapped>(node(subtracting: [.requiresAny], append: "@allValues"))
+        Query<T.Value.Wrapped>(keyPath(subtracting: [.requiresAny], append: "@allValues"))
     }
     /// :nodoc:
     public subscript(member: T.Key) -> Query<T.Value.Wrapped> {
@@ -445,7 +445,7 @@ extension Query where T: RealmKeyedCollection, T.Key: _RealmSchemaDiscoverable, 
 extension Query where T: RealmKeyedCollection, T.Key == String {
     /// Allows a query over all keys in the `Map`.
     public var keys: Query<String> {
-        Query<String>(node(subtracting: [.requiresAny], append: "@allKeys"))
+        Query<String>(keyPath(subtracting: [.requiresAny], append: "@allKeys"))
     }
 }
 
@@ -453,15 +453,15 @@ extension Query where T: RealmKeyedCollection, T.Value: _QueryNumeric {
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Value>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Value>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -469,15 +469,15 @@ extension Query where T: RealmKeyedCollection, T.Value: OptionalProtocol, T.Valu
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: Range<T.Value.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThan, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThan, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 
     /// Checks for all elements in this collection that are within a given range.
     public func contains<V>(_ range: ClosedRange<T.Value.Wrapped>) -> Query<V> {
         Query<V>(.comparison(operator: .and,
-                             .comparison(operator: .greaterThanEqual, node(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
-                             .comparison(operator: .lessThanEqual, node(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
+                             .comparison(operator: .greaterThanEqual, keyPath(subtracting: [.requiresAny], append: "@min"), .constant(range.lowerBound), options: []),
+                             .comparison(operator: .lessThanEqual, keyPath(subtracting: [.requiresAny], append: "@max"), .constant(range.upperBound), options: []), options: []))
     }
 }
 
@@ -486,27 +486,27 @@ extension Query where T: RealmKeyedCollection,
                       T.Value: _QueryNumeric {
     /// Returns the minimum value in the keyed collection.
     public var min: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@min"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@min"))
     }
 
     /// Returns the maximum value in the keyed collection.
     public var max: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@max"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@max"))
     }
 
     /// Returns the average in the keyed collection.
     public var avg: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@avg"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@avg"))
     }
 
     /// Returns the sum of all the values in the keyed collection.
     public var sum: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@sum"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@sum"))
     }
 
     /// Returns the count of all the values in the keyed collection.
     public var count: Query<T.Value> {
-        Query<T.Value>(node(subtracting: [.requiresAny], append: "@count"))
+        Query<T.Value>(keyPath(subtracting: [.requiresAny], append: "@count"))
     }
 }
 
