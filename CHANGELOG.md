@@ -2,9 +2,6 @@ x.y.z Release notes (yyyy-MM-dd)
 =============================================================
 ### Enhancements
 
-* Add `async` versions for `EmailPasswordAuth.callResetPasswordFunction` and `User.linkUser` methods.
-* Add `async` version for `MongoCollection` methods.
-* Add `async` support for user functions.
 * Add an api for a type safe query syntax. This allows you to filter a Realm and collections managed by a Realm
   with Swift style expressions. Here is a brief example:
   ```swift
@@ -26,7 +23,6 @@ x.y.z Release notes (yyyy-MM-dd)
     (($0.fooList.age >= 21).count > 0) && $0.foo.name.starts(with: "L")
   }
   ```([Cocoa #7419](https://github.com/realm/realm-cocoa/pull/7419), since v10.?)
-* None.
 * Add support for multi-user on `@AsyncOpen` and `@AutoOpen`.
 
 ### Fixed
