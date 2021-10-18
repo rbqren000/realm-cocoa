@@ -2093,16 +2093,25 @@ class QueryTests: TestCase {
         % end
     }
 
+    func testAny() {
+        % for listProperty in listProperties + optListProperties:
+        assertQuery(predicate: "(ANY ${ listProperty.colName } == %@)", values: [${ listProperty.value(0) }], expectedCount: 1) {
+            $0.${ listProperty.colName } == ${ listProperty.value(0) }
+        }
+        % end
+
+        % for setProperty in setProperties + optSetProperties:
+        assertQuery(predicate: "(ANY ${ setProperty.colName } == %@)", values: [${ setProperty.value(0) }], expectedCount: 1) {
+            $0.${ setProperty.colName } == ${ setProperty.value(0) }
+        }
+        % end
+
+        assertQuery(predicate: "(((ANY arrayCol.intCol != %@) && (ANY arrayCol.objectCol.intCol > %@)) && ((ANY setCol.intCol != %@) && (ANY setCol.objectCol.intCol > %@)))", values: [123, 456, 123, 456], expectedCount: 0) {
+            (($0.arrayCol.intCol != 123) && ($0.arrayCol.objectCol.intCol > 456)) && (($0.setCol.intCol != 123) && ($0.setCol.objectCol.intCol > 456))
+        }
+    }
+
     func testSubquery() {
-        // ANY
-        assertQuery(predicate: "((ANY arrayCol.intCol != %@) && (ANY arrayCol.objectCol.intCol > %@))", values: [123, 456], expectedCount: 0) {
-            ($0.arrayCol.intCol != 123) && ($0.arrayCol.objectCol.intCol > 456)
-        }
-
-        assertQuery(predicate: "((ANY arrayCol.optIntCol != %@) && (ANY arrayCol.objectCol.optIntCol > %@))", values: [123, 456], expectedCount: 0) {
-            ($0.arrayCol.optIntCol != 123) && ($0.arrayCol.objectCol.optIntCol > 456)
-        }
-
         // List
 
         // Count of results will be 0 because there are no `ModernAllTypesObject`s in the list.
@@ -2174,6 +2183,16 @@ class QueryTests: TestCase {
             ($0.intCol == 6) &&
             (((($0.setCol.intCol == 5) && ($0.setCol.stringCol != "Blah"))).count == 1)
         }
+
+        // Column comparison
+
+        assertQuery(predicate: "(SUBQUERY(arrayCol, $col1, ($col1.stringCol == stringCol)).@count == %@)", values: [0], expectedCount: 1) {
+            ($0.arrayCol.stringCol == $0.stringCol).count == 0
+        }
+
+        assertThrows(assertQuery(predicate: "", values: [], expectedCount: 1) {
+            ($0.stringCol == $0.stringCol).count == 0
+        }, reason: "Subquery's must contain a keypath starting with a collection.")
     }
 
     // MARK: - Collection Aggregations
@@ -3015,12 +3034,7 @@ class QueryTests: TestCase {
     // MARK: Column comparison
 
     func testColumnComparison() {
-
         // Basic comparison
-
-        assertQuery(predicate: "(stringCol == stringCol)", values: [], expectedCount: 1) {
-            $0.stringCol == $0.stringCol
-        }
 
         assertQuery(predicate: "(stringEnumCol == stringEnumCol)", values: [], expectedCount: 1) {
             $0.stringEnumCol == $0.stringEnumCol
@@ -3128,48 +3142,24 @@ class QueryTests: TestCase {
             $0.objectCol.optStringCol == $0.objectCol.optStringCol
         }
 
-        assertQuery(predicate: "(objectCol.stringCol == objectCol.optStringCol)", values: [], expectedCount: 1) {
-            $0.objectCol.stringCol == $0.objectCol.optStringCol
-        }
-
         assertQuery(predicate: "(objectCol.optStringCol != objectCol.optStringCol)", values: [], expectedCount: 0) {
             $0.objectCol.optStringCol != $0.objectCol.optStringCol
-        }
-
-        assertQuery(predicate: "(objectCol.stringCol != objectCol.optStringCol)", values: [], expectedCount: 0) {
-            $0.objectCol.stringCol != $0.objectCol.optStringCol
         }
 
         assertQuery(predicate: "(objectCol.optIntCol > objectCol.optIntCol)", values: [], expectedCount: 0) {
             $0.objectCol.optIntCol > $0.objectCol.optIntCol
         }
 
-        assertQuery(predicate: "(objectCol.intCol > objectCol.optIntCol)", values: [], expectedCount: 0) {
-            $0.objectCol.intCol > $0.objectCol.optIntCol
-        }
-
         assertQuery(predicate: "(objectCol.optIntCol >= objectCol.optIntCol)", values: [], expectedCount: 1) {
             $0.objectCol.optIntCol >= $0.objectCol.optIntCol
-        }
-
-        assertQuery(predicate: "(objectCol.intCol >= objectCol.optIntCol)", values: [], expectedCount: 1) {
-            $0.objectCol.intCol >= $0.objectCol.optIntCol
         }
 
         assertQuery(predicate: "(objectCol.optIntCol < objectCol.optIntCol)", values: [], expectedCount: 0) {
             $0.objectCol.optIntCol < $0.objectCol.optIntCol
         }
 
-        assertQuery(predicate: "(objectCol.intCol < objectCol.optIntCol)", values: [], expectedCount: 0) {
-            $0.objectCol.intCol < $0.objectCol.optIntCol
-        }
-
         assertQuery(predicate: "(objectCol.optIntCol <= objectCol.optIntCol)", values: [], expectedCount: 1) {
             $0.objectCol.optIntCol <= $0.objectCol.optIntCol
-        }
-
-        assertQuery(predicate: "(objectCol.intCol <= objectCol.optIntCol)", values: [], expectedCount: 1) {
-            $0.objectCol.intCol <= $0.objectCol.optIntCol
         }
 
         // String comparison

@@ -8555,16 +8555,189 @@ class QueryTests: TestCase {
         }
     }
 
+    func testAny() {
+        assertQuery(predicate: "(ANY arrayBool == %@)", values: [true], expectedCount: 1) {
+            $0.arrayBool == true
+        }
+        assertQuery(predicate: "(ANY arrayInt == %@)", values: [1], expectedCount: 1) {
+            $0.arrayInt == 1
+        }
+        assertQuery(predicate: "(ANY arrayInt8 == %@)", values: [Int8(8)], expectedCount: 1) {
+            $0.arrayInt8 == Int8(8)
+        }
+        assertQuery(predicate: "(ANY arrayInt16 == %@)", values: [Int16(16)], expectedCount: 1) {
+            $0.arrayInt16 == Int16(16)
+        }
+        assertQuery(predicate: "(ANY arrayInt32 == %@)", values: [Int32(32)], expectedCount: 1) {
+            $0.arrayInt32 == Int32(32)
+        }
+        assertQuery(predicate: "(ANY arrayInt64 == %@)", values: [Int64(64)], expectedCount: 1) {
+            $0.arrayInt64 == Int64(64)
+        }
+        assertQuery(predicate: "(ANY arrayFloat == %@)", values: [Float(5.55444333)], expectedCount: 1) {
+            $0.arrayFloat == Float(5.55444333)
+        }
+        assertQuery(predicate: "(ANY arrayDouble == %@)", values: [123.456], expectedCount: 1) {
+            $0.arrayDouble == 123.456
+        }
+        assertQuery(predicate: "(ANY arrayString == %@)", values: ["Foo"], expectedCount: 1) {
+            $0.arrayString == "Foo"
+        }
+        assertQuery(predicate: "(ANY arrayBinary == %@)", values: [Data(count: 64)], expectedCount: 1) {
+            $0.arrayBinary == Data(count: 64)
+        }
+        assertQuery(predicate: "(ANY arrayDate == %@)", values: [Date(timeIntervalSince1970: 1000000)], expectedCount: 1) {
+            $0.arrayDate == Date(timeIntervalSince1970: 1000000)
+        }
+        assertQuery(predicate: "(ANY arrayDecimal == %@)", values: [Decimal128(123.456)], expectedCount: 1) {
+            $0.arrayDecimal == Decimal128(123.456)
+        }
+        assertQuery(predicate: "(ANY arrayObjectId == %@)", values: [ObjectId("61184062c1d8f096a3695046")], expectedCount: 1) {
+            $0.arrayObjectId == ObjectId("61184062c1d8f096a3695046")
+        }
+        assertQuery(predicate: "(ANY arrayUuid == %@)", values: [UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!], expectedCount: 1) {
+            $0.arrayUuid == UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!
+        }
+        assertQuery(predicate: "(ANY arrayAny == %@)", values: [AnyRealmValue.objectId(ObjectId("61184062c1d8f096a3695046"))], expectedCount: 1) {
+            $0.arrayAny == AnyRealmValue.objectId(ObjectId("61184062c1d8f096a3695046"))
+        }
+        assertQuery(predicate: "(ANY arrayOptBool == %@)", values: [true], expectedCount: 1) {
+            $0.arrayOptBool == true
+        }
+        assertQuery(predicate: "(ANY arrayOptInt == %@)", values: [1], expectedCount: 1) {
+            $0.arrayOptInt == 1
+        }
+        assertQuery(predicate: "(ANY arrayOptInt8 == %@)", values: [Int8(8)], expectedCount: 1) {
+            $0.arrayOptInt8 == Int8(8)
+        }
+        assertQuery(predicate: "(ANY arrayOptInt16 == %@)", values: [Int16(16)], expectedCount: 1) {
+            $0.arrayOptInt16 == Int16(16)
+        }
+        assertQuery(predicate: "(ANY arrayOptInt32 == %@)", values: [Int32(32)], expectedCount: 1) {
+            $0.arrayOptInt32 == Int32(32)
+        }
+        assertQuery(predicate: "(ANY arrayOptInt64 == %@)", values: [Int64(64)], expectedCount: 1) {
+            $0.arrayOptInt64 == Int64(64)
+        }
+        assertQuery(predicate: "(ANY arrayOptFloat == %@)", values: [Float(5.55444333)], expectedCount: 1) {
+            $0.arrayOptFloat == Float(5.55444333)
+        }
+        assertQuery(predicate: "(ANY arrayOptDouble == %@)", values: [123.456], expectedCount: 1) {
+            $0.arrayOptDouble == 123.456
+        }
+        assertQuery(predicate: "(ANY arrayOptString == %@)", values: ["Foo"], expectedCount: 1) {
+            $0.arrayOptString == "Foo"
+        }
+        assertQuery(predicate: "(ANY arrayOptBinary == %@)", values: [Data(count: 64)], expectedCount: 1) {
+            $0.arrayOptBinary == Data(count: 64)
+        }
+        assertQuery(predicate: "(ANY arrayOptDate == %@)", values: [Date(timeIntervalSince1970: 1000000)], expectedCount: 1) {
+            $0.arrayOptDate == Date(timeIntervalSince1970: 1000000)
+        }
+        assertQuery(predicate: "(ANY arrayOptDecimal == %@)", values: [Decimal128(123.456)], expectedCount: 1) {
+            $0.arrayOptDecimal == Decimal128(123.456)
+        }
+        assertQuery(predicate: "(ANY arrayOptUuid == %@)", values: [UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!], expectedCount: 1) {
+            $0.arrayOptUuid == UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!
+        }
+        assertQuery(predicate: "(ANY arrayOptObjectId == %@)", values: [ObjectId("61184062c1d8f096a3695046")], expectedCount: 1) {
+            $0.arrayOptObjectId == ObjectId("61184062c1d8f096a3695046")
+        }
+
+        assertQuery(predicate: "(ANY setBool == %@)", values: [true], expectedCount: 1) {
+            $0.setBool == true
+        }
+        assertQuery(predicate: "(ANY setInt == %@)", values: [1], expectedCount: 1) {
+            $0.setInt == 1
+        }
+        assertQuery(predicate: "(ANY setInt8 == %@)", values: [Int8(8)], expectedCount: 1) {
+            $0.setInt8 == Int8(8)
+        }
+        assertQuery(predicate: "(ANY setInt16 == %@)", values: [Int16(16)], expectedCount: 1) {
+            $0.setInt16 == Int16(16)
+        }
+        assertQuery(predicate: "(ANY setInt32 == %@)", values: [Int32(32)], expectedCount: 1) {
+            $0.setInt32 == Int32(32)
+        }
+        assertQuery(predicate: "(ANY setInt64 == %@)", values: [Int64(64)], expectedCount: 1) {
+            $0.setInt64 == Int64(64)
+        }
+        assertQuery(predicate: "(ANY setFloat == %@)", values: [Float(5.55444333)], expectedCount: 1) {
+            $0.setFloat == Float(5.55444333)
+        }
+        assertQuery(predicate: "(ANY setDouble == %@)", values: [123.456], expectedCount: 1) {
+            $0.setDouble == 123.456
+        }
+        assertQuery(predicate: "(ANY setString == %@)", values: ["Foo"], expectedCount: 1) {
+            $0.setString == "Foo"
+        }
+        assertQuery(predicate: "(ANY setBinary == %@)", values: [Data(count: 64)], expectedCount: 1) {
+            $0.setBinary == Data(count: 64)
+        }
+        assertQuery(predicate: "(ANY setDate == %@)", values: [Date(timeIntervalSince1970: 1000000)], expectedCount: 1) {
+            $0.setDate == Date(timeIntervalSince1970: 1000000)
+        }
+        assertQuery(predicate: "(ANY setDecimal == %@)", values: [Decimal128(123.456)], expectedCount: 1) {
+            $0.setDecimal == Decimal128(123.456)
+        }
+        assertQuery(predicate: "(ANY setObjectId == %@)", values: [ObjectId("61184062c1d8f096a3695046")], expectedCount: 1) {
+            $0.setObjectId == ObjectId("61184062c1d8f096a3695046")
+        }
+        assertQuery(predicate: "(ANY setUuid == %@)", values: [UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!], expectedCount: 1) {
+            $0.setUuid == UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!
+        }
+        assertQuery(predicate: "(ANY setAny == %@)", values: [AnyRealmValue.objectId(ObjectId("61184062c1d8f096a3695046"))], expectedCount: 1) {
+            $0.setAny == AnyRealmValue.objectId(ObjectId("61184062c1d8f096a3695046"))
+        }
+        assertQuery(predicate: "(ANY setOptBool == %@)", values: [true], expectedCount: 1) {
+            $0.setOptBool == true
+        }
+        assertQuery(predicate: "(ANY setOptInt == %@)", values: [1], expectedCount: 1) {
+            $0.setOptInt == 1
+        }
+        assertQuery(predicate: "(ANY setOptInt8 == %@)", values: [Int8(8)], expectedCount: 1) {
+            $0.setOptInt8 == Int8(8)
+        }
+        assertQuery(predicate: "(ANY setOptInt16 == %@)", values: [Int16(16)], expectedCount: 1) {
+            $0.setOptInt16 == Int16(16)
+        }
+        assertQuery(predicate: "(ANY setOptInt32 == %@)", values: [Int32(32)], expectedCount: 1) {
+            $0.setOptInt32 == Int32(32)
+        }
+        assertQuery(predicate: "(ANY setOptInt64 == %@)", values: [Int64(64)], expectedCount: 1) {
+            $0.setOptInt64 == Int64(64)
+        }
+        assertQuery(predicate: "(ANY setOptFloat == %@)", values: [Float(5.55444333)], expectedCount: 1) {
+            $0.setOptFloat == Float(5.55444333)
+        }
+        assertQuery(predicate: "(ANY setOptDouble == %@)", values: [123.456], expectedCount: 1) {
+            $0.setOptDouble == 123.456
+        }
+        assertQuery(predicate: "(ANY setOptString == %@)", values: ["Foo"], expectedCount: 1) {
+            $0.setOptString == "Foo"
+        }
+        assertQuery(predicate: "(ANY setOptBinary == %@)", values: [Data(count: 64)], expectedCount: 1) {
+            $0.setOptBinary == Data(count: 64)
+        }
+        assertQuery(predicate: "(ANY setOptDate == %@)", values: [Date(timeIntervalSince1970: 1000000)], expectedCount: 1) {
+            $0.setOptDate == Date(timeIntervalSince1970: 1000000)
+        }
+        assertQuery(predicate: "(ANY setOptDecimal == %@)", values: [Decimal128(123.456)], expectedCount: 1) {
+            $0.setOptDecimal == Decimal128(123.456)
+        }
+        assertQuery(predicate: "(ANY setOptUuid == %@)", values: [UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!], expectedCount: 1) {
+            $0.setOptUuid == UUID(uuidString: "33041937-05b2-464a-98ad-3910cbe0d09e")!
+        }
+        assertQuery(predicate: "(ANY setOptObjectId == %@)", values: [ObjectId("61184062c1d8f096a3695046")], expectedCount: 1) {
+            $0.setOptObjectId == ObjectId("61184062c1d8f096a3695046")
+        }
+
+        assertQuery(predicate: "(((ANY arrayCol.intCol != %@) && (ANY arrayCol.objectCol.intCol > %@)) && ((ANY setCol.intCol != %@) && (ANY setCol.objectCol.intCol > %@)))", values: [123, 456, 123, 456], expectedCount: 0) {
+            (($0.arrayCol.intCol != 123) && ($0.arrayCol.objectCol.intCol > 456)) && (($0.setCol.intCol != 123) && ($0.setCol.objectCol.intCol > 456))
+        }
+    }
+
     func testSubquery() {
-        // ANY
-        assertQuery(predicate: "((ANY arrayCol.intCol != %@) && (ANY arrayCol.objectCol.intCol > %@))", values: [123, 456], expectedCount: 0) {
-            ($0.arrayCol.intCol != 123) && ($0.arrayCol.objectCol.intCol > 456)
-        }
-
-        assertQuery(predicate: "((ANY arrayCol.optIntCol != %@) && (ANY arrayCol.objectCol.optIntCol > %@))", values: [123, 456], expectedCount: 0) {
-            ($0.arrayCol.optIntCol != 123) && ($0.arrayCol.objectCol.optIntCol > 456)
-        }
-
         // List
 
         // Count of results will be 0 because there are no `ModernAllTypesObject`s in the list.
@@ -8636,6 +8809,16 @@ class QueryTests: TestCase {
             ($0.intCol == 6) &&
             (((($0.setCol.intCol == 5) && ($0.setCol.stringCol != "Blah"))).count == 1)
         }
+
+        // Column comparison
+
+        assertQuery(predicate: "(SUBQUERY(arrayCol, $col1, ($col1.stringCol == stringCol)).@count == %@)", values: [0], expectedCount: 1) {
+            ($0.arrayCol.stringCol == $0.stringCol).count == 0
+        }
+
+        assertThrows(assertQuery(predicate: "", values: [], expectedCount: 1) {
+            ($0.stringCol == $0.stringCol).count == 0
+        }, reason: "Subquery's must contain a keypath starting with a collection.")
     }
 
     // MARK: - Collection Aggregations
@@ -19336,12 +19519,7 @@ class QueryTests: TestCase {
     // MARK: Column comparison
 
     func testColumnComparison() {
-
         // Basic comparison
-
-        assertQuery(predicate: "(stringCol == stringCol)", values: [], expectedCount: 1) {
-            $0.stringCol == $0.stringCol
-        }
 
         assertQuery(predicate: "(stringEnumCol == stringEnumCol)", values: [], expectedCount: 1) {
             $0.stringEnumCol == $0.stringEnumCol
@@ -19449,48 +19627,24 @@ class QueryTests: TestCase {
             $0.objectCol.optStringCol == $0.objectCol.optStringCol
         }
 
-        assertQuery(predicate: "(objectCol.stringCol == objectCol.optStringCol)", values: [], expectedCount: 1) {
-            $0.objectCol.stringCol == $0.objectCol.optStringCol
-        }
-
         assertQuery(predicate: "(objectCol.optStringCol != objectCol.optStringCol)", values: [], expectedCount: 0) {
             $0.objectCol.optStringCol != $0.objectCol.optStringCol
-        }
-
-        assertQuery(predicate: "(objectCol.stringCol != objectCol.optStringCol)", values: [], expectedCount: 0) {
-            $0.objectCol.stringCol != $0.objectCol.optStringCol
         }
 
         assertQuery(predicate: "(objectCol.optIntCol > objectCol.optIntCol)", values: [], expectedCount: 0) {
             $0.objectCol.optIntCol > $0.objectCol.optIntCol
         }
 
-        assertQuery(predicate: "(objectCol.intCol > objectCol.optIntCol)", values: [], expectedCount: 0) {
-            $0.objectCol.intCol > $0.objectCol.optIntCol
-        }
-
         assertQuery(predicate: "(objectCol.optIntCol >= objectCol.optIntCol)", values: [], expectedCount: 1) {
             $0.objectCol.optIntCol >= $0.objectCol.optIntCol
-        }
-
-        assertQuery(predicate: "(objectCol.intCol >= objectCol.optIntCol)", values: [], expectedCount: 1) {
-            $0.objectCol.intCol >= $0.objectCol.optIntCol
         }
 
         assertQuery(predicate: "(objectCol.optIntCol < objectCol.optIntCol)", values: [], expectedCount: 0) {
             $0.objectCol.optIntCol < $0.objectCol.optIntCol
         }
 
-        assertQuery(predicate: "(objectCol.intCol < objectCol.optIntCol)", values: [], expectedCount: 0) {
-            $0.objectCol.intCol < $0.objectCol.optIntCol
-        }
-
         assertQuery(predicate: "(objectCol.optIntCol <= objectCol.optIntCol)", values: [], expectedCount: 1) {
             $0.objectCol.optIntCol <= $0.objectCol.optIntCol
-        }
-
-        assertQuery(predicate: "(objectCol.intCol <= objectCol.optIntCol)", values: [], expectedCount: 1) {
-            $0.objectCol.intCol <= $0.objectCol.optIntCol
         }
 
         // String comparison
