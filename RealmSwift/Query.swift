@@ -15,21 +15,16 @@
 // limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////
+
 import Foundation
 import Realm
 
 /// Enum representing an option for `String` queries.
-public struct StringOptions: OptionSet {
-    /// :nodoc:
-    public let rawValue: Int8
-    /// :nodoc:
-    public init(rawValue: Int8) {
-        self.rawValue = rawValue
-    }
+public enum StringOptions {
     /// A case-insensitive search.
-    public static let caseInsensitive = StringOptions(rawValue: 1)
+    case caseInsensitive
     /// Query ignores diacritic marks.
-    public static let diacriticInsensitive = StringOptions(rawValue: 2)
+    case diacriticInsensitive
 }
 
 /**
@@ -104,7 +99,7 @@ public struct StringOptions: OptionSet {
 public struct Query<T: _RealmSchemaDiscoverable> {
     /// This initaliser should be used from callers who require queries on primitive collections.
     /// - Parameter isPrimitive: True if performing a query on a primitive collection.
-    public init(isPrimitive: Bool = false) {
+    internal init(isPrimitive: Bool = false) {
         if isPrimitive {
             node = .keyPath(["self"], options: [.isCollection])
         } else {
@@ -246,6 +241,11 @@ public struct Query<T: _RealmSchemaDiscoverable> {
     }
 
     // MARK: Query Construction
+
+    /// For testing purposes only. Do not use directly.
+    public static func _constructForTesting<V>() -> Query<V> {
+        return Query<V>()
+    }
 
     /// Constructs an NSPredicate compatibe string with its accompanying arguments.
     /// - Note: This is for internal use only and is exposed for testing purposes.
@@ -705,7 +705,7 @@ extension Query where T: _QueryBinary {
      - parameter value: value used.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func contains<V>(_ value: T, options: StringOptions = []) -> Query<V> {
+    public func contains<V>(_ value: T, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .contains, node, .constant(value), options: options))
     }
 
@@ -714,7 +714,7 @@ extension Query where T: _QueryBinary {
      - parameter column: The other column.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func contains<U, V>(_ column: Query<U>, options: StringOptions = []) -> Query<V> where U: _QueryBinary {
+    public func contains<U, V>(_ column: Query<U>, options: Set<StringOptions> = []) -> Query<V> where U: _QueryBinary {
         Query<V>(.comparison(operator: .contains, node, column.node, options: options))
     }
 
@@ -723,7 +723,7 @@ extension Query where T: _QueryBinary {
      - parameter value: value used.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func starts<V>(with value: T, options: StringOptions = []) -> Query<V> {
+    public func starts<V>(with value: T, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .beginsWith, node, .constant(value), options: options))
     }
 
@@ -732,7 +732,7 @@ extension Query where T: _QueryBinary {
      - parameter column: The other column.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func starts<U, V>(with column: Query<U>, options: StringOptions = []) -> Query<V> {
+    public func starts<U, V>(with column: Query<U>, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .beginsWith, node, column.node, options: options))
     }
 
@@ -741,7 +741,7 @@ extension Query where T: _QueryBinary {
      - parameter value: value used.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func ends<V>(with value: T, options: StringOptions = []) -> Query<V> {
+    public func ends<V>(with value: T, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .endsWith, node, .constant(value), options: options))
     }
 
@@ -750,7 +750,7 @@ extension Query where T: _QueryBinary {
      - parameter column: The other column.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func ends<U, V>(with column: Query<U>, options: StringOptions = []) -> Query<V> {
+    public func ends<U, V>(with column: Query<U>, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .endsWith, node, column.node, options: options))
     }
 
@@ -759,7 +759,7 @@ extension Query where T: _QueryBinary {
      - parameter value: value used.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func equals<V>(_ value: T, options: StringOptions = []) -> Query<V> {
+    public func equals<V>(_ value: T, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .equal, node, .constant(value), options: options))
     }
 
@@ -768,7 +768,7 @@ extension Query where T: _QueryBinary {
      - parameter column: The other column.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func equals<U, V>(_ column: Query<U>, options: StringOptions = []) -> Query<V> {
+    public func equals<U, V>(_ column: Query<U>, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .equal, node, column.node, options: options))
     }
 
@@ -777,7 +777,7 @@ extension Query where T: _QueryBinary {
      - parameter value: value used.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func notEquals<V>(_ value: T, options: StringOptions = []) -> Query<V> {
+    public func notEquals<V>(_ value: T, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .notEqual, node, .constant(value), options: options))
     }
 
@@ -786,7 +786,7 @@ extension Query where T: _QueryBinary {
      - parameter column: The other column.
      - parameter options: A Set of options used to evaluate the search query.
      */
-    public func notEquals<U, V>(_ column: Query<U>, options: StringOptions = []) -> Query<V> {
+    public func notEquals<U, V>(_ column: Query<U>, options: Set<StringOptions> = []) -> Query<V> {
         Query<V>(.comparison(operator: .notEqual, node, column.node, options: options))
     }
 }
@@ -826,10 +826,10 @@ extension Query where T == Bool {
 // MARK: Keypath Collection Aggregates
 
 /**
- You can use only use aggregates in numeric types as a keypath on a collection.
+ You can use only use aggregates in numeric types where the root keypath is a collection.
  ```swift
  let results = realm.objects(Person.self).query {
- !$0.dogs.age.avg >= 0
+    !$0.dogs.age.avg >= 0
  }
  ```
  Where `dogs` is an array of objects.
@@ -905,7 +905,7 @@ fileprivate indirect enum QueryNode {
 
     case keyPath(_ value: [String], options: KeyPathOptions)
 
-    case comparison(operator: Operator, _ lhs: QueryNode, _ rhs: QueryNode, options: StringOptions)
+    case comparison(operator: Operator, _ lhs: QueryNode, _ rhs: QueryNode, options: Set<StringOptions>)
     case between(_ lhs: QueryNode, lowerBound: QueryNode, upperBound: QueryNode)
 
     case subqueryCount(_ child: QueryNode)
@@ -959,7 +959,7 @@ private func buildPredicate(_ root: QueryNode, subqueryCount: Int = 0) -> (Strin
         formatStr.append("}")
     }
 
-    func strOptions(_ options: StringOptions) -> String {
+    func strOptions(_ options: Set<StringOptions>) -> String {
         if options == [] {
             return ""
         }

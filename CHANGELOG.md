@@ -5,14 +5,14 @@ x.y.z Release notes (yyyy-MM-dd)
 * Add an api for a type safe query syntax. This allows you to filter a Realm and collections managed by a Realm
   with Swift style expressions. Here is a brief example:
   ```swift
-  class Foo: Object {
+  class Dog: Object {
     @Persisted var name: String
     @Persisted var age: String
   }
   class Person: Object {
     @Persisted var stringList: List<String>
-    @Persisted var fooList: List<Foo>
-    @Persisted var foo: Foo
+    @Persisted var dogList: List<Dog>
+    @Persisted var dog: Dog
   }
 
   let persons = realm.objects(Person.self).where {
@@ -20,7 +20,7 @@ x.y.z Release notes (yyyy-MM-dd)
   }
 
   persons = realm.objects(Person.self).where {
-    (($0.fooList.age >= 21).count > 0) && $0.foo.name.starts(with: "L")
+    ($0.dogList.age >= 21) && $0.dog.name.starts(with: "L")
   }
   ```([Cocoa #7419](https://github.com/realm/realm-cocoa/pull/7419), since v10.?)
 * Add support for multi-user on `@AsyncOpen` and `@AutoOpen`.

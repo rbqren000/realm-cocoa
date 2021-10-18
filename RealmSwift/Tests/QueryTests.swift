@@ -225,7 +225,7 @@ class QueryTests: TestCase {
         let results = objects().where(query)
         XCTAssertEqual(results.count, expectedCount)
 
-        let constructedQuery = query(Query<ModernAllTypesObject>())._constructPredicate()
+        let constructedQuery = query(Query<ModernAllTypesObject>._constructForTesting())._constructPredicate()
         XCTAssertEqual(constructedQuery.0,
                        predicate)
 
@@ -249,7 +249,7 @@ class QueryTests: TestCase {
         let results = realmWithTestPath().objects(ModernCollectionObject.self).where(query)
         XCTAssertEqual(results.count, expectedCount)
 
-        let constructedQuery = query(Query<ModernCollectionObject>())._constructPredicate()
+        let constructedQuery = query(Query<ModernCollectionObject>._constructForTesting())._constructPredicate()
         XCTAssertEqual(constructedQuery.0,
                        predicate)
 
@@ -277,7 +277,7 @@ class QueryTests: TestCase {
         }
         XCTAssertEqual(results.count, expectedCount)
 
-        let constructedQuery = query(Query<ModernAllTypesObject>())._constructPredicate()
+        let constructedQuery = query(Query<ModernAllTypesObject>._constructForTesting())._constructPredicate()
         XCTAssertEqual(constructedQuery.0,
                        predicate)
 
@@ -296,7 +296,7 @@ class QueryTests: TestCase {
         results = colObj.map.where(query)
         XCTAssertEqual(results.count, expectedCount)
 
-        let constructedQuery = query(Query<ModernAllTypesObject?>())._constructPredicate()
+        let constructedQuery = query(Query<ModernAllTypesObject?>._constructForTesting())._constructPredicate()
         XCTAssertEqual(constructedQuery.0,
                        predicate)
 
